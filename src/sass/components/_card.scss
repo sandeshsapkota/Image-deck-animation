@@ -1,0 +1,15 @@
+.card {
+  border-radius: 8px;
+  box-shadow: 0 8px 80px -40px rgb(38 30 91 / 50%);
+  background: #fff;
+  padding: 16px;
+
+  &--one {
+    padding: 0;
+  }
+
+  &-header, &-body, &-footer {
+    padding: 16px;
+  }
+}
+

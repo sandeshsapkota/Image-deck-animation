@@ -1,0 +1,37 @@
+.sidebar {
+  background: var(--bg-sidebar);
+  width: var(--sidebar-width);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+  box-shadow: 5px 10px 15px -3px rgba(0,0,0,0.1);
+
+
+  ul {
+    list-style: none;
+    display: block;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-left: 0;
+      padding-left: 0;
+      display: inline-block;
+      width: 100%;
+
+      a {
+        font-size: 0.75em;
+        padding: 1.05em 1em;
+        position: relative;
+        display: block;
+
+        &:hover {
+          color: white;
+          background: black;
+        }
+      }
+    }
+  }
+}
