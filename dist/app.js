@@ -93,18 +93,112 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+//========================================================================
+//========================== VARIABLES ===================================
+//========================================================================
 var banner = document.querySelector('.banner');
-var bannerImages = document.querySelectorAll('.banner__img');
-var num = 0;
-banner.addEventListener('mousewheel', function () {
-  num++;
 
-  if (num % 10 === 0) {
-    fireImg();
-  }
+var bannerImages = _toConsumableArray(document.querySelectorAll('.banner__img'));
+
+var bannerImageText = _toConsumableArray(document.querySelectorAll('.banner__img-name p'));
+
+var magnetCursor = document.querySelector('.scroll');
+var currentImageIndex = bannerImages.length - 1;
+var wheelIndex = 0;
+var reverse = false; //========================================================================
+//========================== MAIN CONTENT ================================
+//========================================================================
+
+var throwImage = function throwImage() {
+  var animationDuration = 600;
+
+  if (reverse) {
+    currentImageIndex = 0;
+  } else {
+    if (currentImageIndex < 0) currentImageIndex = bannerImages.length - 1;
+  } // at initialization - this is the last img in the array
+
+
+  var firedImage = bannerImages.splice(reverse ? 0 : bannerImages.length - 1, 1)[0]; // poping out last img
+
+  bannerImages.length ? bannerImages.unshift(firedImage) : bannerImages.push(firedImage); // adding that image at the front
+
+  handleTranslation(firedImage);
+  console.log(firedImage); // changing the z-index of all images right after throwing
+
+  setTimeout(function () {
+    return handleZindex(bannerImages);
+  }, animationDuration / 3); // removing the animate class
+  // setTimeout(() => firedImage.classList.remove("animate"), (animationDuration * 84) / 100)
+  // rotating the image at the time it stacks at the back
+
+  setTimeout(function () {
+    return handleTranslationBack(firedImage);
+  }, 400); // preparing for the next throwing image - un rotating
+
+  var lastImage = bannerImages[bannerImages.length - 1];
+  lastImage.style.transform = reverse ? handleTranslationBack(lastImage) : "rotate(0) scale(1.01)";
+  currentImageIndex = reverse ? currentImageIndex + 1 : currentImageIndex - 1;
+};
+
+var handleMagnetCursor = function handleMagnetCursor(e) {
+  var x = e.x,
+      y = e.y; // magnetCursor.style.left = x + 'px'
+
+  magnetCursor.style.transform = "translate(".concat(x, "px, ").concat(y, "px)");
+  var ifMagnetIsToHide = e.target.classList.contains('hide-magnet') ? 'add' : 'remove';
+  handleClass(magnetCursor, 'fade-out', ifMagnetIsToHide);
+  handleClass(magnetCursor, 'hide', 'remove');
+};
+
+banner.addEventListener('mousewheel', function (e) {
+  var deltaY = e.deltaY;
+  wheelIndex++;
+  deltaY < 0 ? reverse = true : reverse = false;
+  wheelIndex % 10 === 0 ? throwImage() : 0;
 });
+window.addEventListener('mousemove', handleMagnetCursor); //========================================================================
+//========================== UTILITIES ===================================
+//========================================================================
 
-function fireImg() {}
+var handleZindex = function handleZindex(arr) {
+  reverse ? arr.reverse().forEach(function (item, i) {
+    return item.style.zIndex = i;
+  }) : arr.forEach(function (item, i) {
+    return item.style.zIndex = i;
+  });
+};
+
+var handleTranslationBack = function handleTranslationBack(img) {
+  var randomDeg = Math.floor(Math.random() * 12) + -18;
+  img.style.transition = '.2s linear';
+  img.style.transform = reverse ? "translateX(0) rotate(0deg)" : "rotate(".concat(randomDeg, "deg)");
+  img.classList.remove('img-size');
+};
+
+var handleTranslation = function handleTranslation(img) {
+  img.style.transform = 'translateX(-500px) rotate(-16deg)';
+  img.classList.add('img-size');
+  img.style.transition = '.3s ease';
+};
+
+function handleClass(node, className) {
+  var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'add';
+  node.classList[type](className);
+} //========================================================================
+//========================== INIT ========================================
+//========================================================================
+
+
+handleZindex(bannerImages);
 
 /***/ }),
 
