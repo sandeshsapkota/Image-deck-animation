@@ -1,21 +1,19 @@
-.hide {
-  display: none;
-}
-
-.fade-out {
-  opacity: 0;
-}
-
 
 .banner {
   height: 100vh;
   font-family: 'Moon Dance', cursive;
-  color: white !important;
+  background: #fff;
+  color: black;
 
   &__img-wrapper {
     height: 600px;
     width: 390px;
     position: relative;
+
+    @include respond(xxl) {
+      height: 470px;
+      width: 320px;
+    }
   }
 
   &__img {
@@ -23,35 +21,69 @@
     height: 100%;
     position: absolute;
     will-change: transform, z-index;
-
-    &:nth-child(1) {
-      transform: rotate(0deg);
-    }
-
-    &:nth-child(2) {
-      transform: rotate(6deg);
-    }
-
-    &:nth-child(3) {
-      transform: rotate(-8deg);
-    }
+    transition: .3s ease-out;
   }
 
   &__img-name {
-    font-size: 21px;
-    font-family: sans-serif;
-    text-transform: uppercase;
-    font-weight: bold;
+    bottom: -48px;
+    letter-spacing: 2px;
+  }
 
+  &__img-number-wrap {
+    top: -64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include respond(xxl) {
+      top: -56px;
+    }
+
+    > span{
+      letter-spacing: 2px;
+    }
+
+    .banner__img-number {
+      position: relative;
+      overflow: hidden;
+      height: 20px;
+      width: 12px;
+      margin-right: 4px;
+      margin-top: -1px;
+    }
+  }
+
+  &__anim-txt {
     position: absolute;
-    bottom: -90px;
+    left: 0;
     width: 100%;
+
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: 600;
     text-align: center;
+    text-transform: uppercase;
+  }
+
+  &__img-name-txt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: .2s linear;
+    opacity: 0;
+    visibility: hidden;
+    font-size: inherit;
+    transform: translateY(12px);
   }
 
   .img-size {
     height: 570px;
     width: 370px;
+    @include respond(xxl) {
+      height: 470px;
+      width: 320px;
+    }
   }
 
   &__text {
@@ -59,6 +91,10 @@
     color: #333;
     font-size: 220px;
     letter-spacing: 72px;
+
+    @include respond(xxl) {
+      font-size: 180px;
+    }
   }
 }
 
@@ -89,6 +125,10 @@ a {
   opacity: .7;
   transition: .2s;
 
+  @include respond(sm) {
+    font-size: 22px;
+  }
+
   &:hover {
     opacity: 1;
   }
@@ -117,4 +157,23 @@ a {
     left: 10vh;
   }
 
+}
+
+.hidden {
+  display: none;
+}
+
+.block {
+  display: block;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  height: auto;
 }
