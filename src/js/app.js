@@ -32,8 +32,6 @@ const throwImage = () => {
 
     handleTranslation(firedImage)
 
-    console.log(firedImage)
-
 
     // changing the z-index of all images right after throwing
     setTimeout(() => handleZindex(bannerImages), (animationDuration / 3))
@@ -59,11 +57,24 @@ const handleMagnetCursor = (e) => {
     handleClass(magnetCursor, 'hide', 'remove')
 }
 
+let throttleTimer;
+const throttle = (callback, time) => {
+    if (throttleTimer) return;
+    throttleTimer = true;
+    setTimeout(() => {
+        callback();
+        throttleTimer = false;
+    }, time);
+}
+window.addEventListener("scroll", () => {
+
+});
+
 banner.addEventListener('mousewheel', function (e) {
     const {deltaY} = e
     wheelIndex++;
     deltaY < 0 ? reverse = true : reverse = false;
-    wheelIndex % 10 === 0 ? throwImage() : 0
+    wheelIndex % 10 === 0 ? throttle(throwImage, 300) : 0
 })
 
 window.addEventListener('mousemove', handleMagnetCursor)
@@ -100,3 +111,6 @@ function handleClass(node, className, type = 'add') {
 //========================================================================
 
 handleZindex(bannerImages)
+
+
+
